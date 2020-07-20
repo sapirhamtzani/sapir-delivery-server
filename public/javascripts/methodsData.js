@@ -32,5 +32,18 @@ function getUserMethods(userObj) {
   return methodsList;
 }
 
+function findMethod(methodId) {
+  const method = methodsList[methodId];
+  if (method) {
+    let removeIndex = methodsList
+      .map(function (item) {
+        return item.id;
+      })
+      .indexOf(methodId);
+    methodsList.splice(removeIndex, 1);
+    console.log("backend", methodsList);
+  }
+  return method;
+}
 
-module.exports = { addNewMethod, methodsList, getUserMethods };
+module.exports = { addNewMethod, methodsList, getUserMethods, findMethod };

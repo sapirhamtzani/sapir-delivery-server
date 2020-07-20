@@ -17,7 +17,7 @@ router.get("/getAllMethods", (req, res, next) => {
 
 router.post("/findMethod", (req, res) => {
   const { methodId } = req.body;
-  const method = methodsData.methodsList[methodId];
+  const method = methodsData.findMethod(methodId);
   method
     ? res.send({ success: true, method })
     : res.send({ success: false, reason: "no such id" });
