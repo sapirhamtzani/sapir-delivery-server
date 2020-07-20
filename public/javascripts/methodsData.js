@@ -35,13 +35,7 @@ function getUserMethods(userObj) {
 function findMethod(methodId) {
   const method = methodsList[methodId];
   if (method) {
-    let removeIndex = methodsList
-      .map(function (item) {
-        return item.id;
-      })
-      .indexOf(methodId);
-    methodsList.splice(removeIndex, 1);
-    console.log("backend", methodsList);
+    delete methodsList[methodId];
   }
   return method;
 }
