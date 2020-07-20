@@ -15,6 +15,14 @@ router.get("/getAllMethods", (req, res, next) => {
   res.send({ list: methodsData.methodsList });
 });
 
+router.post("/findMethod", (req, res) => {
+  const { methodId } = req.body;
+  const method = methodsData.methodsList[methodId];
+  method
+    ? res.send({ success: true, method })
+    : res.send({ success: false, reason: "no such id" });
+});
+
 router.post("/getUserMethods", (req, res) => {
   const objUser = {
     address: req.body.address,

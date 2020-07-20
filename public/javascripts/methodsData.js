@@ -32,4 +32,5 @@ function getUserMethods(userObj) {
   return methodsList;
 }
 
+
 module.exports = { addNewMethod, methodsList, getUserMethods };
