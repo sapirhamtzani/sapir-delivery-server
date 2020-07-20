@@ -44,6 +44,6 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-// app.listen(process.env.PORT || 3002, function(){
-//   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-// });
+app.listen(process.env.PORT || 3002, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});
