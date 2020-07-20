@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const methodsData = require("../Public/javascripts/methodsData");
+const methodsData = require("../public/javascripts/methodsData");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
