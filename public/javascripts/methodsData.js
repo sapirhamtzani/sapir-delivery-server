@@ -25,8 +25,9 @@ function addNewMethod(methodObj){
       }
 }
 
+function getUserMethods(userObj){
+    //need to find suitable methods
+     return methodsList;
+}
 
-
-
-
-module.exports = {addNewMethod};
+module.exports = {addNewMethod,methodsList,getUserMethods};
