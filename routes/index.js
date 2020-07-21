@@ -26,7 +26,7 @@ router.post("/findMethod", (req, res) => {
 router.post("/getUserMethods", (req, res) => {
   try {
     const list = methodsData.getUserMethods(req.body);
-    res.send({ success: true, list });
+    res.send({ success: true, list: list });
   } catch (e) {
     res.send({ success: false, reason: e });
   }
