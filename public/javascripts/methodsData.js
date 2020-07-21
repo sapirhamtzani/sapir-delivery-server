@@ -6,9 +6,9 @@ const methodsList = {
     name: "90210",
     rate: "6$",
     zipcode: "",
-    radius: "",
-    centerLat: "",
-    centerLng: "",
+    radius: "400",
+    centerLat: "32.09477268566945",
+    centerLng: "34.77666432381626",
   },
   2: {
     name: "Tel Aviv",
@@ -33,38 +33,60 @@ function addNewMethod(methodObj) {
 }
 
 function getUserMethods(userObj) {
-  {
-    let cords;
-    let userList = {};
-    const address = userObj.address;
-    const zipcode = userObj.zipcode;
+  let cords;
+  let userList = {};
+  const address = userObj.address;
+  const zipcode = userObj.zipcode;
+  //
+  // (async () => {
+  //   const response = await fetch(
+  //     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+  //       address
+  //     )}&key=AIzaSyAcsAWJRVDJlbmQiQYGSeNhHTZlWaJ1MO4`
+  //   );
+  //   const { results } = await response.json();
+  //   cords["lat"] = results[0].geometry.location.lat;
+  //   cords["lng"] = results[0].geometry.location.lng;
+  //   Object.keys(methodsList).forEach((key) => {
+  //     if (
+  //       checkIfCordInCircleBounders(
+  //         methodsList[key].centerLat,
+  //         methodsList[key].centerLng,
+  //         methodsList[key].radius,
+  //         cords.lat,
+  //         cords.lng
+  //       )
+  //     )
+  //       userList[key] = methodsList[key];
+  //     if (userObj.zipcode !== null && methodsList[zipcode] === zipcode)
+  //       userList[key] = methodsList[key];
+  //   });
+  // })();
 
-    (async () => {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-          address
-        )}&key=AIzaSyAcsAWJRVDJlbmQiQYGSeNhHTZlWaJ1MO4`
-      );
-      const { results } = await response.json();
-      cords["lat"] = results[0].geometry.location.lat;
-      cords["lng"] = results[0].geometry.location.lng;
-      Object.keys(methodsList).forEach((key) => {
-        if (
-          checkIfCordInCircleBounders(
-            methodsList[key].centerLat,
-            methodsList[key].centerLng,
-            methodsList[key].radius,
-            cords.lat,
-            cords.lng
-          )
+  fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+      address
+    )}&key=AIzaSyAcsAWJRVDJlbmQiQYGSeNhHTZlWaJ1MO4`
+  ).then(async (res) => {
+    let { results } = await res.json();
+    cords["lat"] = results[0].geometry.location.lat;
+    cords["lng"] = results[0].geometry.location.lng;
+    Object.keys(methodsList).forEach((key) => {
+      if (
+        checkIfCordInCircleBounders(
+          methodsList[key].centerLat,
+          methodsList[key].centerLng,
+          methodsList[key].radius,
+          cords.lat,
+          cords.lng
         )
-          userList[key] = methodsList[key];
-        if (userObj.zipcode !== null && methodsList[zipcode] === zipcode)
-          userList[key] = methodsList[key];
-      });
-    })();
-  }
-  return userList;
+      )
+        userList[key] = methodsList[key];
+      if (userObj.zipcode !== null && methodsList[zipcode] === zipcode)
+        userList[key] = methodsList[key];
+    });
+    return userList;
+  });
 }
 
 function checkIfCordInCircleBounders(
