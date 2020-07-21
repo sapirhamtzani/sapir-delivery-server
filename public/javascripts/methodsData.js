@@ -70,25 +70,25 @@ async function getUserMethods(userObj) {
   );
 
   const { results } = await fetchRes.json();
-  return { userObj, results };
+ // return { userObj, results };
   cords["lat"] = results[0].geometry.location.lat;
   cords["lng"] = results[0].geometry.location.lng;
-  return cords;
-  // Object.keys(methodsList).forEach((key) => {
-  //   if (
-  //     checkIfCordInCircleBounders(
-  //       methodsList[key].centerLat,
-  //       methodsList[key].centerLng,
-  //       methodsList[key].radius,
-  //       cords.lat,
-  //       cords.lng
-  //     )
-  //   )
-  //     userList[key] = methodsList[key];
-  //   if (userObj.zipcode !== null && methodsList[key].zipcode === zipcode)
-  //     userList[key] = methodsList[key];
-  // });
-  // return userList;
+ // return cords;
+  Object.keys(methodsList).forEach((key) => {
+    if (
+      checkIfCordInCircleBounders(
+        methodsList[key].centerLat,
+        methodsList[key].centerLng,
+        methodsList[key].radius,
+        cords.lat,
+        cords.lng
+      )
+    )
+      userList[key] = methodsList[key];
+    if (userObj.zipcode !== null && methodsList[key].zipcode === zipcode)
+      userList[key] = methodsList[key];
+  });
+  return userList;
 }
 
 function checkIfCordInCircleBounders(
