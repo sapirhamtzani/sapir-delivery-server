@@ -70,9 +70,10 @@ async function getUserMethods(userObj) {
   );
 
   const { results } = await fetchRes.json();
-  cords["lat"] = results[0].geometry.location.lat;
-  cords["lng"] = results[0].geometry.location.lng;
-  return cords;
+  return results;
+  // cords["lat"] = results[0].geometry.location.lat;
+  // cords["lng"] = results[0].geometry.location.lng;
+  // return cords;
   // Object.keys(methodsList).forEach((key) => {
   //   if (
   //     checkIfCordInCircleBounders(
