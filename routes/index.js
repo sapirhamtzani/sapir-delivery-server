@@ -24,12 +24,8 @@ router.post("/findMethod", (req, res) => {
 });
 
 router.post("/getUserMethods", (req, res) => {
-  const objUser = {
-    address: req.body.address,
-    zipcode: req.body.zipcode,
-  };
   try {
-    const list = methodsData.getUserMethods(objUser);
+    const list = methodsData.getUserMethods(req.body);
     res.send({ success: true, list });
   } catch (e) {
     res.send({ success: false, reason: e });
