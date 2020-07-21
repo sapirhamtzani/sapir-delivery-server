@@ -16,13 +16,16 @@ router.get("/getAllMethods", async (req, res, next) => {
     res.send({ success: false, reason: e.message });
   }
 });
-
 router.post("/findMethod", async (req, res) => {
   const { methodId } = req.body;
   const method = await methodsData.findMethod(methodId);
-  method !== ""
-    ? res.send({ success: true, method })
-    : res.send({ success: false, reason: "no such id" });
+  try {
+    method !== ""
+      ? res.send({ success: true, method })
+      : res.send({ success: false, reason: "no such id" });
+  } catch (e) {
+    res.send({ success: false, reason: e.message });
+  }
 });
 
 router.post("/getUserMethods", async (req, res) => {
