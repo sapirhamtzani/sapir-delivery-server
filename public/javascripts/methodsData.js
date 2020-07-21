@@ -111,14 +111,17 @@ function checkIfCordInCircleBounders(
 }
 
 async function findMethod(methodId) {
-  let method;
+  let method = {};
   const methodsRef = db.collection("methods");
   const methodsObj = await methodsRef.where("methodId", "==", methodId).get();
   if (methodsObj.empty) {
     return "";
   }
 
-  method = methodsObj[0].data();
+  methodsObj.forEach((doc) => {
+    method[doc.id] = doc.data();
+  });
+
   //await db.collection("methods").doc(methodId).delete();
   return method;
 }
