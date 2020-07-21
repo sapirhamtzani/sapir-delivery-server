@@ -40,7 +40,6 @@ async function getUserMethods(userObj) {
   const zipcode = userObj.zipcode;
   const methodsList = await getAllMethods();
 
-
   const fetchRes = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       address
@@ -51,47 +50,72 @@ async function getUserMethods(userObj) {
   cords["lat"] = results[0].geometry.location.lat;
   cords["lng"] = results[0].geometry.location.lng;
   Object.keys(methodsList).forEach((key) => {
-    if (
-      checkIfCordInCircleBounders(
-        Number(methodsList[key].centerLat),
-        Number(methodsList[key].centerLng),
-        Number(methodsList[key].radius),
-        Number(cords.lat),
-        Number(cords.lng)
-      )
-    )
+    const point = {
+      latitude: Number(methodsList[key].centerLat),
+      longitude: Number(methodsList[key].centerLng),
+    };
+    const insert = {
+      latitude: Number(cords.lat),
+      longitude: Number(cords.lng),
+    };
+    if (withinRadius(point, insert, Number(methodsList[key].radius))) {
       userList[key] = methodsList[key];
-    if (userObj.zipcode !== null && methodsList[key].zipcode === zipcode)
+    }
+
+    if (userObj.zipcode !== null && methodsList[key].zipcode === zipcode) {
       userList[key] = methodsList[key];
+    }
   });
   return userList;
 }
 
-function checkIfCordInCircleBounders(
-  centerLat,
-  centerLng,
-  radius,
-  cordLat,
-  cordLng
-) {
+function withinRadius(point, interest, radios) {
+  "use strict";
+
   let deg2rad = (n) => {
     return Math.tan(n * (Math.PI / 180));
   };
 
-  let dLat = deg2rad(cordLat - centerLat);
-  let dLon = deg2rad(cordLng - centerLng);
+  let dLat = deg2rad(interest.latitude - point.latitude);
+  let dLon = deg2rad(interest.longitude - point.longitude);
 
   let a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(centerLat)) *
-      Math.cos(deg2rad(cordLat)) *
+    Math.cos(deg2rad(point.latitude)) *
+      Math.cos(deg2rad(interest.latitude)) *
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
   let c = 2 * Math.asin(Math.sqrt(a));
-  let d = radius * c;
+  let d = radios * c;
 
-  return d <= radius / 1000;
+  return d <= radios / 10000;
 }
+
+// function checkIfCordInCircleBounders(
+//   centerLat,
+//   centerLng,
+//   radius,
+//   cordLat,
+//   cordLng
+// ) {
+//   let deg2rad = (n) => {
+//     return Math.tan(n * (Math.PI / 180));
+//   };
+//
+//   let dLat = deg2rad(cordLat - centerLat);
+//   let dLon = deg2rad(cordLng - centerLng);
+//
+//   let a =
+//     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+//     Math.cos(deg2rad(centerLat)) *
+//       Math.cos(deg2rad(cordLat)) *
+//       Math.sin(dLon / 2) *
+//       Math.sin(dLon / 2);
+//   let c = 2 * Math.asin(Math.sqrt(a));
+//   let d = radius * c;
+//
+//   return d <= radius / 1000;
+// }
 
 async function findMethod(methodId) {
   let method = {};
