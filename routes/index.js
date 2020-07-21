@@ -7,9 +7,9 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-router.get("/sapir", (req, res, next) => {
+router.get("/sapir", async (req, res, next) => {
   try {
-    let data = methodsData.checkData();
+    let data = await methodsData.checkData();
     res.send("Hello from server!!", data);
   } catch (e) {
     res.send({ success: false, reason: e.message });
