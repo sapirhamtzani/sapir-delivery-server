@@ -13,11 +13,13 @@ admin.initializeApp({
 const db = admin.firestore();
 
 async function checkData() {
+  let dataObj = {};
   const snapshot = await db.collection("methods").get();
-  return snapshot;
-  // snapshot.forEach((doc) => {
-  //   console.log(doc.id, '=>', doc.data());
-  // });
+
+  snapshot.forEach((doc) => {
+    dataObj[doc.id] = doc.data();
+  });
+  return dataObj;
 }
 
 const methodsList = {
