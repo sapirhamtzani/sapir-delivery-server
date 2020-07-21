@@ -91,32 +91,6 @@ function withinRadius(point, interest, radios) {
   return d <= radios / 10000;
 }
 
-// function checkIfCordInCircleBounders(
-//   centerLat,
-//   centerLng,
-//   radius,
-//   cordLat,
-//   cordLng
-// ) {
-//   let deg2rad = (n) => {
-//     return Math.tan(n * (Math.PI / 180));
-//   };
-//
-//   let dLat = deg2rad(cordLat - centerLat);
-//   let dLon = deg2rad(cordLng - centerLng);
-//
-//   let a =
-//     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-//     Math.cos(deg2rad(centerLat)) *
-//       Math.cos(deg2rad(cordLat)) *
-//       Math.sin(dLon / 2) *
-//       Math.sin(dLon / 2);
-//   let c = 2 * Math.asin(Math.sqrt(a));
-//   let d = radius * c;
-//
-//   return d <= radius / 1000;
-// }
-
 async function findMethod(methodId) {
   let method = {};
   const methodsRef = db.collection("methods");
