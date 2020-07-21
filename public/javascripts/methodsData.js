@@ -10,25 +10,6 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-const methodsList = {
-  1: {
-    name: "90210",
-    rate: "6$",
-    zipcode: "",
-    radius: "400",
-    centerLat: "32.09477268566945",
-    centerLng: "34.77666432381626",
-  },
-  2: {
-    name: "Tel Aviv",
-    rate: "10$",
-    zipcode: "",
-    radius: "",
-    centerLat: "",
-    centerLng: "",
-  },
-};
-
 async function getAllMethods() {
   let dataObj = {};
   const dataArray = await db.collection("methods").get();
@@ -57,6 +38,8 @@ async function getUserMethods(userObj) {
   let userList = {};
   const address = userObj.address;
   const zipcode = userObj.zipcode;
+  const methodsList = await getAllMethods();
+
 
   const fetchRes = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
@@ -128,7 +111,6 @@ async function findMethod(methodId) {
 
 module.exports = {
   addNewMethod,
-  methodsList,
   getUserMethods,
   findMethod,
   getAllMethods,

@@ -8,19 +8,6 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-router.get("/sapir", async (req, res, next) => {
-  res.send("Hello from server!!");
-});
-
-router.get("/check", async (req, res, next) => {
-  try {
-    let data = await methodsData.getAllMethods();
-    res.send({ data });
-  } catch (e) {
-    res.send({ success: false, reason: e.message });
-  }
-});
-
 router.get("/getAllMethods", async (req, res, next) => {
   try {
     let methodsList = await methodsData.getAllMethods();
