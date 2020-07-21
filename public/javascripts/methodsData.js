@@ -105,12 +105,13 @@ function checkIfCordInCircleBounders(
 //   return vec <= Number(radius);
 // }
 //
-// function findMethod(methodId) {
-//   const method = methodsList[methodId];
-//   if (method) {
-//     delete methodsList[methodId];
-//   }
-//   return method;
-// }
+
+function findMethod(methodId) {
+  const method = methodsList[methodId];
+  if (method) {
+    delete methodsList[methodId];
+  }
+  return method;
+}
 
 module.exports = { addNewMethod, methodsList, getUserMethods, findMethod };
