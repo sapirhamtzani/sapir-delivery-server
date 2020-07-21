@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const bodyParser = require('body-parser');
 const methodsData = require("../public/javascripts/methodsData");
 
 /* GET home page. */
@@ -8,9 +9,13 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/sapir", async (req, res, next) => {
+    res.send("Hello from server!!");
+});
+
+router.get("/check", async (req, res, next) => {
   try {
     let data = await methodsData.checkData();
-    res.send({ msg: "Hello from server!!", data: data });
+    res.send({data});
   } catch (e) {
     res.send({ success: false, reason: e.message });
   }

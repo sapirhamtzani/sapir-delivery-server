@@ -24,7 +24,7 @@ firebase.initializeApp({
 const db = firebase.firestore();
 
 async function checkData() {
-  let querySnapshot= db.collection("methods").get();
+  let querySnapshot= await db.collection("methods").get();
   return querySnapshot;
 }
 
