@@ -37,7 +37,7 @@ async function getUserMethods(userObj) {
   let userList = {};
   const address = userObj.address;
   const zipcode = userObj.zipcode;
-  return address;
+
   // (async () => {
   //   const response = await fetch(
   //     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
@@ -70,6 +70,7 @@ async function getUserMethods(userObj) {
   );
 
   const { results } = await fetchRes.json();
+  return { userObj, results };
   cords["lat"] = results[0].geometry.location.lat;
   cords["lng"] = results[0].geometry.location.lng;
   return cords;
