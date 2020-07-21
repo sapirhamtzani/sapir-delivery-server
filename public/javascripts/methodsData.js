@@ -122,7 +122,7 @@ async function findMethod(methodId) {
     method = doc.data();
   });
 
-  //await db.collection("methods").doc(methodId).delete();
+  await db.collection("methods").doc(methodId).delete();
   return method;
 }
 
