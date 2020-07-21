@@ -32,8 +32,8 @@ function addNewMethod(methodObj) {
   };
 }
 
-function getUserMethods(userObj) {
-  let cords;
+async function getUserMethods(userObj) {
+  let cords = {};
   let userList = {};
   const address = userObj.address;
   const zipcode = userObj.zipcode;
@@ -63,31 +63,31 @@ function getUserMethods(userObj) {
   //   });
   // })();
 
-  fetch(
+  const fetchRes = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       address
     )}&key=AIzaSyAcsAWJRVDJlbmQiQYGSeNhHTZlWaJ1MO4`
-  ).then(async (res) => {
-    let { results } = await res.json();
-    cords["lat"] = results[0].geometry.location.lat;
-    cords["lng"] = results[0].geometry.location.lng;
-    return cords;
-    // Object.keys(methodsList).forEach((key) => {
-    //   if (
-    //     checkIfCordInCircleBounders(
-    //       methodsList[key].centerLat,
-    //       methodsList[key].centerLng,
-    //       methodsList[key].radius,
-    //       cords.lat,
-    //       cords.lng
-    //     )
-    //   )
-    //     userList[key] = methodsList[key];
-    //   if (userObj.zipcode !== null && methodsList[key].zipcode === zipcode)
-    //     userList[key] = methodsList[key];
-    // });
-    // return userList;
-  });
+  );
+
+  const { results } = await fetchRes.json();
+  cords["lat"] = results[0].geometry.location.lat;
+  cords["lng"] = results[0].geometry.location.lng;
+  return cords;
+  // Object.keys(methodsList).forEach((key) => {
+  //   if (
+  //     checkIfCordInCircleBounders(
+  //       methodsList[key].centerLat,
+  //       methodsList[key].centerLng,
+  //       methodsList[key].radius,
+  //       cords.lat,
+  //       cords.lng
+  //     )
+  //   )
+  //     userList[key] = methodsList[key];
+  //   if (userObj.zipcode !== null && methodsList[key].zipcode === zipcode)
+  //     userList[key] = methodsList[key];
+  // });
+  // return userList;
 }
 
 function checkIfCordInCircleBounders(

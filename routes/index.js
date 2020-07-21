@@ -23,9 +23,9 @@ router.post("/findMethod", (req, res) => {
     : res.send({ success: false, reason: "no such id" });
 });
 
-router.post("/getUserMethods", (req, res) => {
+router.post("/getUserMethods", async (req, res) => {
   try {
-    const list = methodsData.getUserMethods(req.body);
+    const list = await methodsData.getUserMethods(req.body);
     res.send({ success: true, list: list });
   } catch (e) {
     res.send({ success: false, reason: e });
