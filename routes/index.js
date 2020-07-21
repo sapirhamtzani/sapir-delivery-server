@@ -47,9 +47,9 @@ router.post("/getUserMethods", async (req, res) => {
   }
 });
 
-router.post("/addMethod", (req, res) => {
+router.post("/addMethod", async (req, res) => {
   try {
-    methodsData.addNewMethod(req.body);
+    await methodsData.addNewMethod(req.body);
     res.send({ success: true });
   } catch (e) {
     res.send({ success: false, reason: e.message });

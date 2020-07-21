@@ -2,9 +2,7 @@ const { uuid } = require("uuidv4");
 const fetch = require("node-fetch");
 
 let admin = require("firebase-admin");
-
 let serviceAccount = require("./serviceAccountKey.json");
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://sapir-delivery.firebaseio.com",
@@ -12,15 +10,6 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-async function getAllMethods() {
-  let dataObj = {};
-  const snapshot = await db.collection("methods").get();
-
-  snapshot.forEach((doc) => {
-    dataObj[doc.data().methodId] = doc.data();
-  });
-  return dataObj;
-}
 
 const methodsList = {
   1: {
@@ -41,16 +30,38 @@ const methodsList = {
   },
 };
 
-function addNewMethod(methodObj) {
+
+async function getAllMethods() {
+  let dataObj = {};
+  const snapshot = await db.collection("methods").get();
+  snapshot.forEach((doc) => {
+    dataObj[doc.id]= doc.data();
+  });
+  return dataObj;
+}
+
+async function addNewMethod(methodObj) {
   const id = uuid();
-  methodsList[id] = {
-    name: methodObj.methodName,
-    rate: methodObj.methodRate,
-    zipcode: methodObj.zipcode,
-    radius: methodObj.radius,
-    centerLat: methodObj.centerLat,
-    centerLng: methodObj.centerLng,
-  };
+  // methodsList[id] = {
+  //   name: methodObj.methodName,
+  //   rate: methodObj.methodRate,
+  //   zipcode: methodObj.zipcode,
+  //   radius: methodObj.radius,
+  //   centerLat: methodObj.centerLat,
+  //   centerLng: methodObj.centerLng,
+  // };
+
+  const aTuringRef = db.collection('methods').doc('id');
+
+  await aTuringRef.set({
+      name: methodObj.methodName,
+      rate: methodObj.methodRate,
+      zipcode: methodObj.zipcode,
+      radius: methodObj.radius,
+      centerLat: methodObj.centerLat,
+      centerLng: methodObj.centerLng,
+
+  });
 }
 
 async function getUserMethods(userObj) {
