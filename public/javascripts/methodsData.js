@@ -119,7 +119,7 @@ async function findMethod(methodId) {
   }
 
   methodsObj.forEach((doc) => {
-    method[doc.id] = doc.data();
+    method = doc.data();
   });
 
   //await db.collection("methods").doc(methodId).delete();
