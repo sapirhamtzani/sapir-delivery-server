@@ -119,7 +119,7 @@ async function findMethod(methodId) {
   }
 
   method = snapshot[0].data();
-  await db.collection("methods").doc("methodId").delete();
+  await db.collection("methods").doc(methodId).delete();
   return method;
 }
 
