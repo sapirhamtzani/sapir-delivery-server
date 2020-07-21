@@ -14,7 +14,7 @@ router.get("/sapir", async (req, res, next) => {
 
 router.get("/check", async (req, res, next) => {
   try {
-    let data = await methodsData.checkData();
+    let data = await methodsData.getAllMethods();
     res.send({ data });
   } catch (e) {
     res.send({ success: false, reason: e.message });
