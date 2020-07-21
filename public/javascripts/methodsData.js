@@ -40,7 +40,7 @@ async function getAllMethods() {
 
 async function addNewMethod(methodObj) {
   const id = uuid();
-  const aTuringRef = db.collection("methods").doc("id");
+  const aTuringRef = db.collection("methods").doc(id);
   await aTuringRef.set({
     name: methodObj.methodName,
     rate: methodObj.methodRate,
@@ -111,16 +111,16 @@ function checkIfCordInCircleBounders(
 }
 
 async function findMethod(methodId) {
-  let method ;
-  const citiesRef = db.collection('methods');
-  const snapshot = await citiesRef.where('methodId' ,'==', methodId).get();
+  let method;
+  const citiesRef = db.collection("methods");
+  const snapshot = await citiesRef.where("methodId", "==", methodId).get();
   if (snapshot.empty) {
     return "";
   }
 
   method = snapshot[0].data();
-  await db.collection('methods').doc('methodId').delete();
-  return method
+  await db.collection("methods").doc("methodId").delete();
+  return method;
 }
 
 module.exports = {
