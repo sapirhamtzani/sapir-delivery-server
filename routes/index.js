@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const methodsData = require("../public/javascripts/methodsData");
 
 /* GET home page. */
@@ -9,20 +9,25 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/sapir", async (req, res, next) => {
-    res.send("Hello from server!!");
+  res.send("Hello from server!!");
 });
 
 router.get("/check", async (req, res, next) => {
   try {
     let data = await methodsData.checkData();
-    res.send({data});
+    res.send({ data });
   } catch (e) {
     res.send({ success: false, reason: e.message });
   }
 });
 
-router.get("/getAllMethods", (req, res, next) => {
-  res.send({ list: methodsData.methodsList });
+router.get("/getAllMethods", async (req, res, next) => {
+  try {
+    let methodsList = await methodsData.getAllMethods();
+    res.send({ list: methodsList });
+  } catch (e) {
+    res.send({ success: false, reason: e.message });
+  }
 });
 
 router.post("/findMethod", (req, res) => {

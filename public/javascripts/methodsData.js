@@ -12,12 +12,12 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-async function checkData() {
+async function getAllMethods() {
   let dataObj = {};
   const snapshot = await db.collection("methods").get();
 
   snapshot.forEach((doc) => {
-    dataObj[doc.id] = doc.data();
+    dataObj[doc.data().methodId] = doc.data();
   });
   return dataObj;
 }
@@ -124,5 +124,5 @@ module.exports = {
   methodsList,
   getUserMethods,
   findMethod,
-  checkData,
+  getAllMethods,
 };
