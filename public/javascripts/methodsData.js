@@ -10,7 +10,6 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-
 const methodsList = {
   1: {
     name: "90210",
@@ -30,37 +29,26 @@ const methodsList = {
   },
 };
 
-
 async function getAllMethods() {
   let dataObj = {};
   const snapshot = await db.collection("methods").get();
   snapshot.forEach((doc) => {
-    dataObj[doc.id]= doc.data();
+    dataObj[doc.id] = doc.data();
   });
   return dataObj;
 }
 
 async function addNewMethod(methodObj) {
   const id = uuid();
-  // methodsList[id] = {
-  //   name: methodObj.methodName,
-  //   rate: methodObj.methodRate,
-  //   zipcode: methodObj.zipcode,
-  //   radius: methodObj.radius,
-  //   centerLat: methodObj.centerLat,
-  //   centerLng: methodObj.centerLng,
-  // };
-
-  const aTuringRef = db.collection('methods').doc('id');
-
+  const aTuringRef = db.collection("methods").doc("id");
   await aTuringRef.set({
-      name: methodObj.methodName,
-      rate: methodObj.methodRate,
-      zipcode: methodObj.zipcode,
-      radius: methodObj.radius,
-      centerLat: methodObj.centerLat,
-      centerLng: methodObj.centerLng,
-
+    name: methodObj.methodName,
+    rate: methodObj.methodRate,
+    zipcode: methodObj.zipcode,
+    radius: methodObj.radius,
+    centerLat: methodObj.centerLat,
+    centerLng: methodObj.centerLng,
+    methodId: id,
   });
 }
 
@@ -122,12 +110,17 @@ function checkIfCordInCircleBounders(
   return d <= radius / 1000;
 }
 
-function findMethod(methodId) {
-  const method = methodsList[methodId];
-  if (method) {
-    delete methodsList[methodId];
+async function findMethod(methodId) {
+  let method ;
+  const citiesRef = db.collection('methods');
+  const snapshot = await citiesRef.where('methodId' ,'==', methodId).get();
+  if (snapshot.empty) {
+    return "";
   }
-  return method;
+
+  method = snapshot[0].data();
+  await db.collection('methods').doc('methodId').delete();
+  return method
 }
 
 module.exports = {

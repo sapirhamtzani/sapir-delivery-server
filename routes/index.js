@@ -30,10 +30,10 @@ router.get("/getAllMethods", async (req, res, next) => {
   }
 });
 
-router.post("/findMethod", (req, res) => {
+router.post("/findMethod", async (req, res) => {
   const { methodId } = req.body;
-  const method = methodsData.findMethod(methodId);
-  method
+  const method = await methodsData.findMethod(methodId);
+  (method !== "")
     ? res.send({ success: true, method })
     : res.send({ success: false, reason: "no such id" });
 });
