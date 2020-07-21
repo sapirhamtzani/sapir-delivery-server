@@ -79,7 +79,7 @@ function checkIfCordInCircleBounders(
     Math.pow(Number(cordLat) - Number(centerLat), 2) +
       Math.pow(Number(cordLng) - Number(centerLng), 2)
   );
-  return vec <= radius;
+  return vec <= Number(radius);
 }
 
 function findMethod(methodId) {
