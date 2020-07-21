@@ -4,7 +4,7 @@ const firebase = require('firebase');
 require('firebase/database');
 
 function checkData(){
-  let data= firebase.database('sapir-delivery');
+  let data = firebase.database().ref('/methods/methodId');
   return data;
 }
 const methodsList = {
