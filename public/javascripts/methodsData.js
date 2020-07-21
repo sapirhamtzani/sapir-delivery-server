@@ -82,7 +82,7 @@ function getUserMethods(userObj) {
         )
       )
         userList[key] = methodsList[key];
-      if (userObj.zipcode !== null && methodsList[zipcode] === zipcode)
+      if (userObj.zipcode !== null && methodsList[key].zipcode === zipcode)
         userList[key] = methodsList[key];
     });
     return userList;
