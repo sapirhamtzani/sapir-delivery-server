@@ -118,9 +118,9 @@ async function findMethod(methodId) {
     return "";
   }
 
-  //method = methodsObj[0].data();
+  method = methodsObj[0].data();
   //await db.collection("methods").doc(methodId).delete();
-  return methodsObj;
+  return method;
 }
 
 module.exports = {
