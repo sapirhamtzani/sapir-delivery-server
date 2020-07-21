@@ -38,31 +38,6 @@ async function getUserMethods(userObj) {
   const address = userObj.address;
   const zipcode = userObj.zipcode;
 
-  // (async () => {
-  //   const response = await fetch(
-  //     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-  //       address
-  //     )}&key=AIzaSyAcsAWJRVDJlbmQiQYGSeNhHTZlWaJ1MO4`
-  //   );
-  //   const { results } = await response.json();
-  //   cords["lat"] = results[0].geometry.location.lat;
-  //   cords["lng"] = results[0].geometry.location.lng;
-  //   Object.keys(methodsList).forEach((key) => {
-  //     if (
-  //       checkIfCordInCircleBounders(
-  //         methodsList[key].centerLat,
-  //         methodsList[key].centerLng,
-  //         methodsList[key].radius,
-  //         cords.lat,
-  //         cords.lng
-  //       )
-  //     )
-  //       userList[key] = methodsList[key];
-  //     if (userObj.zipcode !== null && methodsList[zipcode] === zipcode)
-  //       userList[key] = methodsList[key];
-  //   });
-  // })();
-
   const fetchRes = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       address
@@ -70,18 +45,16 @@ async function getUserMethods(userObj) {
   );
 
   const { results } = await fetchRes.json();
- // return { userObj, results };
   cords["lat"] = results[0].geometry.location.lat;
   cords["lng"] = results[0].geometry.location.lng;
- // return cords;
   Object.keys(methodsList).forEach((key) => {
     if (
       checkIfCordInCircleBounders(
-        methodsList[key].centerLat,
-        methodsList[key].centerLng,
-        methodsList[key].radius,
-        cords.lat,
-        cords.lng
+        Number(methodsList[key].centerLat),
+        Number(methodsList[key].centerLng),
+        Number(methodsList[key].radius),
+        Number(cords.lat),
+        Number(cords.lng)
       )
     )
       userList[key] = methodsList[key];
@@ -98,20 +71,46 @@ function checkIfCordInCircleBounders(
   cordLat,
   cordLng
 ) {
-  //pitagoras
-  const vec = Math.sqrt(
-    Math.pow(Number(cordLat) - Number(centerLat), 2) +
-      Math.pow(Number(cordLng) - Number(centerLng), 2)
-  );
-  return vec <= Number(radius);
+  let deg2rad = (n) => {
+    return Math.tan(n * (Math.PI / 180));
+  };
+
+  let dLat = deg2rad(cordLat - centerLat);
+  let dLon = deg2rad(cordLng - centerLng);
+
+  let a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(centerLat)) *
+      Math.cos(deg2rad(cordLat)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  let c = 2 * Math.asin(Math.sqrt(a));
+  let d = radius * c;
+
+  return d <= radius / 1000;
 }
 
-function findMethod(methodId) {
-  const method = methodsList[methodId];
-  if (method) {
-    delete methodsList[methodId];
-  }
-  return method;
-}
+// function checkIfCordInCircleBounders(
+//   centerLat,
+//   centerLng,
+//   radius,
+//   cordLat,
+//   cordLng
+// ) {
+//   //pitagoras
+//   const vec = Math.sqrt(
+//     Math.pow(Number(cordLat) - Number(centerLat), 2) +
+//       Math.pow(Number(cordLng) - Number(centerLng), 2)
+//   );
+//   return vec <= Number(radius);
+// }
+//
+// function findMethod(methodId) {
+//   const method = methodsList[methodId];
+//   if (method) {
+//     delete methodsList[methodId];
+//   }
+//   return method;
+// }
 
 module.exports = { addNewMethod, methodsList, getUserMethods, findMethod };
