@@ -31,8 +31,8 @@ const methodsList = {
 
 async function getAllMethods() {
   let dataObj = {};
-  const snapshot = await db.collection("methods").get();
-  snapshot.forEach((doc) => {
+  const dataArray = await db.collection("methods").get();
+  dataArray.forEach((doc) => {
     dataObj[doc.id] = doc.data();
   });
   return dataObj;
@@ -40,8 +40,8 @@ async function getAllMethods() {
 
 async function addNewMethod(methodObj) {
   const id = uuid();
-  const aTuringRef = db.collection("methods").doc(id);
-  await aTuringRef.set({
+  const methodsRef = db.collection("methods").doc(id);
+  await methodsRef.set({
     name: methodObj.methodName,
     rate: methodObj.methodRate,
     zipcode: methodObj.zipcode,
@@ -112,15 +112,15 @@ function checkIfCordInCircleBounders(
 
 async function findMethod(methodId) {
   let method;
-  const citiesRef = db.collection("methods");
-  const snapshot = await citiesRef.where("methodId", "==", methodId).get();
-  if (snapshot.empty) {
+  const methodsRef = db.collection("methods");
+  const methodsObj = await methodsRef.where("methodId", "==", methodId).get();
+  if (methodsObj.empty) {
     return "";
   }
 
-  method = snapshot[0].data();
-  await db.collection("methods").doc(methodId).delete();
-  return method;
+  //method = methodsObj[0].data();
+  //await db.collection("methods").doc(methodId).delete();
+  return methodsObj;
 }
 
 module.exports = {
