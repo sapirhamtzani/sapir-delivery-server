@@ -8,8 +8,12 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/sapir", (req, res, next) => {
-  let data= methodsData.checkData();
-  res.send("Hello from server!!", data);
+  try {
+    let data = methodsData.checkData();
+    res.send("Hello from server!!", data);
+  } catch (e) {
+    res.send({ success: false, reason: e.message });
+  }
 });
 
 router.get("/getAllMethods", (req, res, next) => {
@@ -38,7 +42,7 @@ router.post("/addMethod", (req, res) => {
     methodsData.addNewMethod(req.body);
     res.send({ success: true });
   } catch (e) {
-    res.send({ success: false, reason: e });
+    res.send({ success: false, reason: e.message });
   }
 });
 

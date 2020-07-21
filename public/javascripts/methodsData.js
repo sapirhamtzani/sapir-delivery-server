@@ -1,12 +1,22 @@
 const { uuid } = require("uuidv4");
 const fetch = require("node-fetch");
-const firebase = require('firebase');
-require('firebase/database');
+const admin = require("firebase-admin");
+const serviceAccount = require("path/to/serviceAccountKey.json");
 
-function checkData(){
-  let data = firebase.database().ref('/methods/methodId');
-  return data;
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://sapir-delivery.firebaseio.com"
+});
+
+const db= admin.firestore();
+
+
+
+async function checkData(){
+  let doc =  await db.collection('methods').doc('methodId').get();
+  return doc.exists ? doc : 'not exists';
 }
+
 const methodsList = {
   1: {
     name: "90210",
