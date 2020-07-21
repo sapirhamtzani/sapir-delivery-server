@@ -1,6 +1,12 @@
 const { uuid } = require("uuidv4");
 const fetch = require("node-fetch");
+const firebase = require('firebase');
+require('firebase/database');
 
+function checkData(){
+  let data= firebase.database('sapir-delivery');
+  return data;
+}
 const methodsList = {
   1: {
     name: "90210",
@@ -90,22 +96,6 @@ function checkIfCordInCircleBounders(
   return d <= radius / 1000;
 }
 
-// function checkIfCordInCircleBounders(
-//   centerLat,
-//   centerLng,
-//   radius,
-//   cordLat,
-//   cordLng
-// ) {
-//   //pitagoras
-//   const vec = Math.sqrt(
-//     Math.pow(Number(cordLat) - Number(centerLat), 2) +
-//       Math.pow(Number(cordLng) - Number(centerLng), 2)
-//   );
-//   return vec <= Number(radius);
-// }
-//
-
 function findMethod(methodId) {
   const method = methodsList[methodId];
   if (method) {
@@ -114,4 +104,4 @@ function findMethod(methodId) {
   return method;
 }
 
-module.exports = { addNewMethod, methodsList, getUserMethods, findMethod };
+module.exports = { addNewMethod, methodsList, getUserMethods, findMethod,checkData };

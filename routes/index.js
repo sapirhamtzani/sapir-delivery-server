@@ -8,7 +8,8 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/sapir", (req, res, next) => {
-  res.send("Hello from server!!");
+  let data= methodsData.checkData();
+  res.send("Hello from server!!", data);
 });
 
 router.get("/getAllMethods", (req, res, next) => {
