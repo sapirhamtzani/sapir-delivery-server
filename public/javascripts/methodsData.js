@@ -43,7 +43,7 @@ async function getUserMethods(userObj) {
   const fetchRes = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       address
-    )}&key= AIzaSyCc0hK57naDLEyQxoE7kRklflLqYOLfdHs`
+    )}&key=AIzaSyDijb9h12T7cg2DHMjFxOk9KkWmnb-dMT4`
   );
 
   const { results } = await fetchRes.json();
